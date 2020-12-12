@@ -13,8 +13,11 @@ namespace NEA_Game
     public partial class Form4 : Form
     {
         Random rnd = new Random();
+        private int FormWidth = 1280;
+        private int FormHeight = 720;
         private int width;
         private int length;
+        private int tileSize = 50;
         private int seed;
         private float scale = 1.0f;
         int[] pNoiseArray;
@@ -25,22 +28,23 @@ namespace NEA_Game
             InitializeComponent();
             width = Convert.ToInt16(x);
             length = Convert.ToInt16(y);
+            //FormWidth = ; Resize window options
+            //FormHeight = ;
         }
 
         private void Form4_Load(object sender, EventArgs e)
         {
-            drawPicBox(width, length);
+            this.Width = FormWidth;
+            this.Height = FormHeight;
+            DrawPictureBox();
         }
 
-        private void drawPicBox(int width, int length)
+        private void DrawPictureBox()
         {
-            picBox = new PictureBox
-            {
-                Size = new Size(50*width, 50*length),
-                Location = new Point(60, 60),
-            };
+            picBox = pictureBox1;
+            picBox.Size = new Size(tileSize * width, tileSize * length);
             picBox.BackColor = Color.ForestGreen;
-            Controls.Add(picBox);
+            CentreMap();
         }
 
         private void drawMap(int width, int length)
@@ -59,7 +63,7 @@ namespace NEA_Game
             }
         }
 
-        private Point mouseDownLocation, mouseUpLocation;
+        private Point mouseDownLocation;
         private void Form4_MouseDown(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Right)
@@ -67,20 +71,43 @@ namespace NEA_Game
                 mouseDownLocation = e.Location;
             }
         }
-        private void Form4_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                mouseUpLocation = e.Location;
-            }
-        }
         private void Form4_MouseMove(object sender, MouseEventArgs e)
         {
-            picBox.Left += (mouseUpLocation.X - mouseDownLocation.X);
-            picBox.Top += (mouseUpLocation.Y - mouseDownLocation.Y);
+            if ((e.Button == MouseButtons.Right) && CheckOnScreen())
+            {
+                picBox.Left += (e.X - mouseDownLocation.X) / tileSize;
+                picBox.Top += (e.Y - mouseDownLocation.Y) / tileSize;
+            }
+        }
+        private bool CheckOnScreen()
+        {
+            bool onScreen;
+            if
+                (
+                   (picBox.Bottom > tileSize)
+                && (picBox.Top < (this.Height - tileSize))
+                && (picBox.Right > tileSize)
+                && (picBox.Left < (this.Width - tileSize))
+                )
+            {
+                onScreen = true;
+            }
+            else
+            {
+                onScreen = false;
+            }
+            return onScreen;
         }
 
-
+        private void centreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CentreMap();
+        }
+        private void CentreMap()
+        {
+            picBox.Left = (FormWidth / 2) - (picBox.Width / 2);
+            picBox.Top = (FormHeight / 2) - (picBox.Height / 2);
+        }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -91,7 +118,14 @@ namespace NEA_Game
 
         private void right50ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            picBox.Left += 50;
+            if(CheckOnScreen())
+                picBox.Left += 50;
+        }
+
+        private void down50ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(CheckOnScreen())
+                picBox.Top += 50;
         }
     }
 }
