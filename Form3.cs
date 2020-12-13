@@ -12,9 +12,19 @@ namespace NEA_Game
 {
     public partial class Form3 : Form
     {
+        public int GetResolution()
+        {
+            return resolutionSelect.SelectedIndex;
+        }
+
         public Form3()
         {
             InitializeComponent();
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            resolutionSelect.Text = "720 x 480";
         }
 
         private void BackButton_Click(object sender, EventArgs e)
