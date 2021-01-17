@@ -22,15 +22,17 @@ namespace NEA_Game
 		private Point tileCoord;
 		private int tileSize;
 
-		public Unit(UnitType inputChoice)//Create a sprite on the map at chosen tile location
+		public Unit(UnitType inputChoice, PictureBox mapBox)//Create a sprite on the map at chosen tile location
 		{
 			unitChoice = inputChoice;
 			unitBox = new PictureBox()
 			{
-				Size = new Size(tileSize, tileSize),
-				Location = tileCoord,
-				Image = GetSprite(),
+				Size = new Size(24, 24),//(tileSize, tileSize),
+				Location = new Point(0, 0),//tileCoord,
+				SizeMode = PictureBoxSizeMode.StretchImage,
+				Image = (Bitmap)Properties.Resources.ResourceManager.GetObject("Unit1"),//GetSprite(),
 			};
+			mapBox.Controls.Add(unitBox);
 		}
 
 		private Bitmap GetSprite() //Get the sprite image based on the unitChoice
