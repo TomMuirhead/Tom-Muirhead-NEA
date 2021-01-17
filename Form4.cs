@@ -12,38 +12,142 @@ namespace NEA_Game
 {
     public partial class Form4 : Form
     {
-        Random rnd = new Random();
-        private int width;
-        private int length;
+        private Random rnd = new Random();
+
+        public int FormWidth;
+        public int FormHeight;
+
+        private int mapWidth;
+        private int mapLength;
+        private int tileSize = 48;
         private int seed;
         private float scale = 1.0f;
-        int[] pNoiseArray;
-        PictureBox picBox;
+        private int[] pNoiseArray;
 
         public Form4(string x, string y)
         {
             InitializeComponent();
-            width = Convert.ToInt16(x);
-            length = Convert.ToInt16(y);
+            mapWidth = Convert.ToInt16(x);
+            mapLength = Convert.ToInt16(y);
+        }
+
+        private void SelectResolution() //Sets screen size from selection in settings menu, (default 1280 x 960)
+        {
+            Form3 f3 = new Form3(); // ***Not currently working, returns null / goes to default
+            switch (f3.GetResolution())
+            {
+                case 0:
+                    FormWidth = 720;
+                    FormHeight = 480;
+                    break;
+                case 1:
+                    FormWidth = 800;
+                    FormHeight = 600;
+                    break;
+                case 2:
+                    FormWidth = 1024;
+                    FormHeight = 768;
+                    break;
+                case 3:
+                    FormWidth = 1152;
+                    FormHeight = 864;
+                    break;
+                case 4:
+                    FormWidth = 1280;
+                    FormHeight = 800;
+                    break;
+                case 5:
+                    FormWidth = 1280;
+                    FormHeight = 960;
+                    break;
+                case 6:
+                    FormWidth = 1280;
+                    FormHeight = 1024;
+                    break;
+                case 7:
+                    FormWidth = 1440;
+                    FormHeight = 900;
+                    break;
+                case 8:
+                    FormWidth = 1600;
+                    FormHeight = 1200;
+                    break;
+                case 9:
+                    FormWidth = 1680;
+                    FormHeight = 1050;
+                    break;
+                case 10:
+                    FormWidth = 1920;
+                    FormHeight = 1080;
+                    break;
+                case 11:
+                    FormWidth = 2715;
+                    FormHeight = 1527;
+                    break;
+                case 12:
+                    FormWidth = 3840;
+                    FormHeight = 2160;
+                    break;
+                default:
+                    FormWidth = 1280;
+                    FormHeight = 960;
+                    break;
+            }
         }
 
         private void Form4_Load(object sender, EventArgs e)
         {
-            drawPicBox(width, length);
+            SelectResolution();
+            this.Width = FormWidth;
+            this.Height = FormHeight;
+            DrawPictureBox();
+            menuStrip.BringToFront();
         }
 
-        private void drawPicBox(int width, int length)
+        private void DrawPictureBox() //Creates pictureBox using width and length user inputs
         {
-            picBox = new PictureBox
-            {
-                Size = new Size(50*width, 50*length),
-                Location = new Point(60, 60),
-            };
+            picBox.Size = new Size(tileSize * mapWidth, tileSize * mapLength);
             picBox.BackColor = Color.ForestGreen;
-            Controls.Add(picBox);
+            //picBox.Image = drawMap;
+            CentreMap();
+        }
+        
+        private void CreateUnit(object sender)
+        {
+            //Draw Unit Sprite = make map picturebox the parent of the sprites.
+            //Switch case for type of unit
+            //Location = mouse location tile
+
+            //PictureBox unitPicBox = new PictureBox();
+            //unitPicBox = pictureBox1;
+            //picBox.Controls.Add(unitPicBox);
+            //unitPicBox.Location = new Point(0, 0);
+
+            //Pass which choice
+            Unit.UnitType inputChoice;
+            string senderName = ((ToolStripMenuItem)sender).Name;
+			switch (senderName)
+			{
+                case "unit1ToolStripMenuItem":
+                    inputChoice = Unit.UnitType.Unit1;
+                    break;
+                case "unit2ToolStripMenuItem":
+                    inputChoice = Unit.UnitType.Unit2;
+                    break;
+                case "unit3ToolStripMenuItem":
+                    inputChoice = Unit.UnitType.Unit3;
+                    break;
+                case "unit4ToolStripMenuItem":
+                    inputChoice = Unit.UnitType.Unit4;
+                    break;
+                default:
+                    inputChoice = Unit.UnitType.Unknown;
+					break;
+			}
+			Unit unit = new Unit(inputChoice);
         }
 
-        private void drawMap(int width, int length)
+        private void drawMap(int width, int length) //Creates bitmap image to set as map in pictureBox
         {
             seed = rnd.Next();
             for (float i = 0f; i < length; i++) //Loop through Perlin Noise algorithm to fill the array
@@ -59,39 +163,104 @@ namespace NEA_Game
             }
         }
 
-        private Point mouseDownLocation, mouseUpLocation;
-        private void Form4_MouseDown(object sender, MouseEventArgs e)
+        private void CentreMap() //Centres the pictureBox to middle of screen
         {
-            if(e.Button == MouseButtons.Right)
-            {
-                mouseDownLocation = e.Location;
-            }
+            picBox.Left = (FormWidth / 2) - (picBox.Width / 2);
+            picBox.Top = (FormHeight / 2) - (picBox.Height / 2);
         }
-        private void Form4_MouseUp(object sender, MouseEventArgs e)
+
+        private void SelectTile(Point mouseLocation)
+        {
+            int x = mouseLocation.X / tileSize * tileSize;
+            int y = mouseLocation.Y / tileSize * tileSize;
+            Point tileCoord = new Point(x, y);
+        }
+
+        //Move the pictureBox around screen when holding RMB
+        private Point mouseDownLocation;
+        private void Form4_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                mouseUpLocation = e.Location;
+                mouseDownLocation.X = e.X - picBox.Left;
+                mouseDownLocation.Y = e.Y - picBox.Top;
             }
         }
         private void Form4_MouseMove(object sender, MouseEventArgs e)
         {
-            picBox.Left += (mouseUpLocation.X - mouseDownLocation.X);
-            picBox.Top += (mouseUpLocation.Y - mouseDownLocation.Y);
+            if ((e.Button == MouseButtons.Right))
+            {
+                picBox.Left += e.X - picBox.Left - mouseDownLocation.X;// / tileSize;
+                picBox.Top += e.Y - picBox.Top - mouseDownLocation.Y;// / tileSize;
+                CheckOnScreen();
+            }
+        }
+        private void picBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                mouseDownLocation = e.Location;
+            }
+            else if(e.Button == MouseButtons.Left) //Select tile on map
+            {
+                mouseDownLocation = e.Location;
+                SelectTile(mouseDownLocation);
+            }
+        }
+        private void picBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button == MouseButtons.Right))
+            {
+                picBox.Left += e.X - mouseDownLocation.X;// / tileSize;
+                picBox.Top += e.Y - mouseDownLocation.Y;// / tileSize;
+                CheckOnScreen();
+            }
         }
 
+        private void CheckOnScreen() //Stops pictureBox moving off screen
+        {
+            if (picBox.Bottom < tileSize + 24) //Keeps one tile width on screen
+            {
+                picBox.Top = tileSize - picBox.Height + 24; //Resets the pictureBox to edge of screen if it goes off screen
+            }
+            if (picBox.Top > this.Height - tileSize - 40)
+            {
+                picBox.Top = this.Height - tileSize - 40;
+            }
+            if (picBox.Right < tileSize)
+            {
+                picBox.Left = tileSize - picBox.Width;
+            }
+            if (picBox.Left > this.Width - tileSize - 16)
+            {
+                picBox.Left = this.Width - tileSize - 16;
+            }
+        }
 
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void centreToolStripMenuItem_Click(object sender, EventArgs e) //centre map
+        {
+            CentreMap();
+        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) //Quit to main menu
         {
             this.Hide();
             Form form1 = new Form1();
             form1.ShowDialog();
         }
-
-        private void right50ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void right50ToolStripMenuItem_Click(object sender, EventArgs e) //move map right
         {
             picBox.Left += 50;
+            CheckOnScreen();
         }
-    }
+        private void down50ToolStripMenuItem_Click(object sender, EventArgs e) //move map down
+        {
+            picBox.Top += 50;
+            CheckOnScreen();
+        }
+
+        private void createToolStripMenuItem_Click(object sender, EventArgs e) //create unit
+        {
+            CreateUnit(sender);
+        }
+	}
 }
