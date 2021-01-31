@@ -12,42 +12,124 @@ namespace NEA_Game
 {
     public partial class Form4 : Form
     {
-        Random rnd = new Random();
-        private int FormWidth = 1280;
-        private int FormHeight = 720;
-        private int width;
-        private int length;
-        private int tileSize = 50;
+        private Form4 form4;
+        private Random rnd = new Random();
+
+        private PictureBox baseLayer;
+        private Map map;
+
+        public int FormWidth;
+        public int FormHeight;
+
+        private int mapWidth;
+        private int mapLength;
+        private int tileSize = 48;
         private int seed;
         private float scale = 1.0f;
-        int[] pNoiseArray;
-        PictureBox picBox;
+        private int[] pNoiseArray;
 
         public Form4(string x, string y)
         {
             InitializeComponent();
-            width = Convert.ToInt16(x);
-            length = Convert.ToInt16(y);
-            //FormWidth = ; Resize window options
-            //FormHeight = ;
+            mapWidth = Convert.ToInt16(x);
+            mapLength = Convert.ToInt16(y);
+            form4 = this;
         }
 
         private void Form4_Load(object sender, EventArgs e)
         {
+            SelectResolution();
             this.Width = FormWidth;
             this.Height = FormHeight;
-            DrawPictureBox();
+
+            baseLayer = new PictureBox()
+            {
+                Size = new Size(FormWidth, FormHeight),
+            };
+            Controls.Add(baseLayer);
+            baseLayer.SendToBack();
+
+            map = new Map(baseLayer, mapWidth, mapLength);
+
+            menuStrip.BringToFront();
+
+            CreateHandlers();
         }
 
-        private void DrawPictureBox()
+        private void CreateHandlers()
         {
-            picBox = pictureBox1;
-            picBox.Size = new Size(tileSize * width, tileSize * length);
-            picBox.BackColor = Color.ForestGreen;
-            CentreMap();
+            baseLayer.MouseDown += map.MouseDown;
+            baseLayer.MouseMove += map.MouseMove;
+            map.mapBox.MouseDown += map.MouseDown;
+            map.mapBox.MouseMove += map.MouseMove;
         }
 
-        private void drawMap(int width, int length)
+		private void SelectResolution() //Sets screen size from selection in settings menu, (default 1280 x 960)
+        {
+            Form3 f3 = new Form3(); // ***Not currently working, returns null / goes to default
+            switch (f3.GetResolution())
+            {
+                case 0:
+                    FormWidth = 720;
+                    FormHeight = 480;
+                    break;
+                case 1:
+                    FormWidth = 800;
+                    FormHeight = 600;
+                    break;
+                case 2:
+                    FormWidth = 1024;
+                    FormHeight = 768;
+                    break;
+                case 3:
+                    FormWidth = 1152;
+                    FormHeight = 864;
+                    break;
+                case 4:
+                    FormWidth = 1280;
+                    FormHeight = 800;
+                    break;
+                case 5:
+                    FormWidth = 1280;
+                    FormHeight = 960;
+                    break;
+                case 6:
+                    FormWidth = 1280;
+                    FormHeight = 1024;
+                    break;
+                case 7:
+                    FormWidth = 1440;
+                    FormHeight = 900;
+                    break;
+                case 8:
+                    FormWidth = 1600;
+                    FormHeight = 1200;
+                    break;
+                case 9:
+                    FormWidth = 1680;
+                    FormHeight = 1050;
+                    break;
+                case 10:
+                    FormWidth = 1920;
+                    FormHeight = 1080;
+                    break;
+                case 11:
+                    FormWidth = 2715;
+                    FormHeight = 1527;
+                    break;
+                case 12:
+                    FormWidth = 3840;
+                    FormHeight = 2160;
+                    break;
+                default:
+                    FormWidth = 1280;
+                    FormHeight = 960;
+                    break;
+            }
+        }
+
+
+        private void drawMap(int width, int length) //Creates bitmap image to set as map in pictureBox
         {
             seed = rnd.Next();
             for (float i = 0f; i < length; i++) //Loop through Perlin Noise algorithm to fill the array
@@ -63,69 +145,35 @@ namespace NEA_Game
             }
         }
 
-        private Point mouseDownLocation;
-        private void Form4_MouseDown(object sender, MouseEventArgs e)
+
+
+        private void centreToolStripMenuItem_Click(object sender, EventArgs e) //centre map
         {
-            if(e.Button == MouseButtons.Right)
-            {
-                mouseDownLocation = e.Location;
-            }
+            map.CentreMap();
         }
-        private void Form4_MouseMove(object sender, MouseEventArgs e)
+        private void right50ToolStripMenuItem_Click(object sender, EventArgs e) //move map right
         {
-            if ((e.Button == MouseButtons.Right) && CheckOnScreen())
-            {
-                picBox.Left += (e.X - mouseDownLocation.X) / tileSize;
-                picBox.Top += (e.Y - mouseDownLocation.Y) / tileSize;
-            }
+            
         }
-        private bool CheckOnScreen()
+        private void down50ToolStripMenuItem_Click(object sender, EventArgs e) //move map down
         {
-            bool onScreen;
-            if
-                (
-                   (picBox.Bottom > tileSize)
-                && (picBox.Top < (this.Height - tileSize))
-                && (picBox.Right > tileSize)
-                && (picBox.Left < (this.Width - tileSize))
-                )
-            {
-                onScreen = true;
-            }
-            else
-            {
-                onScreen = false;
-            }
-            return onScreen;
+            
         }
 
-        private void centreToolStripMenuItem_Click(object sender, EventArgs e)
+        private void createUnitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CentreMap();
+            Point tileCoord = new Point(rnd.Next(0, 432), rnd.Next(0, 432));
+            Unit unit = new Unit(sender, map.mapBox, tileCoord);
         }
-        private void CentreMap()
-        {
-            picBox.Left = (FormWidth / 2) - (picBox.Width / 2);
-            picBox.Top = (FormHeight / 2) - (picBox.Height / 2);
-        }
+        
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) //Quit to main menu
         {
             this.Hide();
             Form form1 = new Form1();
             form1.ShowDialog();
         }
 
-        private void right50ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(CheckOnScreen())
-                picBox.Left += 50;
-        }
-
-        private void down50ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(CheckOnScreen())
-                picBox.Top += 50;
-        }
-    }
+		
+	}
 }
