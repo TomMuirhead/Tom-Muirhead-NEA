@@ -22,15 +22,18 @@ namespace NEA_Game
 		private Point tileCoord;
 		private int tileSize;
 
-		public Unit(UnitType inputChoice)//Create a sprite on the map at chosen tile location
+		public Unit(object sender, PictureBox mapBox, Point tileCoord)//Create a sprite on the map at chosen tile location
 		{
-			unitChoice = inputChoice;
+			Random rnd = new Random();
+			unitChoice = GetUnit(sender);
 			unitBox = new PictureBox()
 			{
-				Size = new Size(tileSize, tileSize),
-				Location = tileCoord,
+				Size = new Size(48, 48),//(tileSize, tileSize),
+				Location = tileCoord,//tileCoord,
+				SizeMode = PictureBoxSizeMode.StretchImage,
 				Image = GetSprite(),
 			};
+			mapBox.Controls.Add(unitBox);
 		}
 
 		private Bitmap GetSprite() //Get the sprite image based on the unitChoice
@@ -64,10 +67,36 @@ namespace NEA_Game
 			return sprite;
 		}
 
-		private UnitType GetUnit() //Will return which unit should be drawn
+		private UnitType GetUnit(object sender) //Will return which unit should be drawn
 		{
-			//Get user input from public Getter
-			return unitChoice;
+			UnitType inputChoice;
+			string senderName = ((ToolStripMenuItem)sender).Text;
+			switch (senderName)
+			{
+				case "Unit 1":
+					inputChoice = UnitType.Unit1;
+					break;
+				case "Unit 2":
+					inputChoice = UnitType.Unit2;
+					break;
+				case "Unit 3":
+					inputChoice = UnitType.Unit3;
+					break;
+				case "Unit 4":
+					inputChoice = UnitType.Unit4;
+					break;
+				case "Unit 5":
+					inputChoice = UnitType.Unit5;
+					break;
+				case "Unit 6":
+					inputChoice = UnitType.Unit6;
+					break;
+				default:
+					inputChoice = UnitType.Unknown;
+					break;
+			}
+
+			return inputChoice;
 		}
 
 
