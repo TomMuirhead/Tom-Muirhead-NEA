@@ -14,7 +14,7 @@ namespace NEA_Game
 		private PictureBox unitBox;
 		private Bitmap unitSprite;
 		private UnitType unitChoice;
-		public enum UnitType
+		private enum UnitType
 		{
 			Unknown, Unit1, Unit2, Unit3, Unit4, Unit5, Unit6,
 		}
