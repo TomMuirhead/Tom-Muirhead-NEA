@@ -18,9 +18,7 @@ namespace NEA_Game
 		private int mapWidth;
 		private int mapLength;
 		private Point tileCoord;
-
-		//private int FormWidth;
-		//private int FormHeight;
+		
 
 		public Map(PictureBox ground, int x, int y)
 		{
@@ -28,18 +26,29 @@ namespace NEA_Game
 			tileSize = 48;
 			mapWidth = x;
 			mapLength = y;
-
+			//Bitmap rndMap = drawMap();
 
 			mapBox = new PictureBox()
 			{
 				Size = new Size(tileSize * mapWidth, tileSize * mapLength),
 				BackColor = Color.ForestGreen,
+				//Image = ranMap,
 			};
 			baseLayer.Controls.Add(mapBox);
 			CentreMap();
 
 			GameContextMenu();
 
+		}
+
+		private void drawMap(int width, int length) //Creates bitmap image to set as map in pictureBox
+		{
+			
+			Tile tile = new Tile(mapWidth, mapLength);
+
+			
+
+			
 		}
 
 		private ToolStripMenuItem unitMenu, buildingMenu;
@@ -57,13 +66,10 @@ namespace NEA_Game
 
 			unitMenu.DropDownItems.AddRange(units);
 		}
-
-
 		private void MenuItemClicked(object sender, EventArgs e)
 		{
 			Unit unit = new Unit(sender, mapBox, tileCoord);
 		}
-		
 		private void AddMenuItem(object sender)
 		{
 			if (sender == mapBox)
