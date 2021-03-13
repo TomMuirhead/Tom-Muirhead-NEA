@@ -16,9 +16,12 @@ namespace NEA_Game
         {
             InitializeComponent();
         }
-
+        
+        // When "Back" button is clicked
         private void BackButton_Click(object sender, EventArgs e)
         {
+            // Hide the Settings screen
+            // Go back to Main Menu screen
             this.Hide();
             Form form1 = new Form1();
             form1.ShowDialog();
