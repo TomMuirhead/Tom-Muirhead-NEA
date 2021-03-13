@@ -27,7 +27,7 @@ namespace NEA_Game
             if (validInput1 == true && validInput2 == true)
             {
                 // Hide the Menu Screen
-                // Creates new Game Screen and pass the inputs as arguements to create the map size
+                // Creates new Game Screen with user inputs as arguements for the map size
                 this.Hide();
                 Form form4 = new Form4(textBox1.Text, textBox2.Text);
                 form4.ShowDialog();
