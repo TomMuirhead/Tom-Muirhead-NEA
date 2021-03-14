@@ -133,11 +133,12 @@ namespace NEA_Game
 			mapBox.Top = (baseLayer.Height / 2) - (mapBox.Height / 2);
 		}
 
-		private void CheckOnScreen()
-		{
-			if (mapBox.Bottom < tileSize + 24) //Keeps one tile width on screen
+		private void CheckOnScreen() // Called everytime the map is moved
+		{	// The numbers +/- is used because the form coords are not exactly on the edge of the screen
+			if (mapBox.Bottom < tileSize + 24) // Keeps one tile width on screen
 			{
-				mapBox.Top = tileSize - mapBox.Height + 24; //Resets the pictureBox to edge of screen if it goes off screen
+				// Resets the pictureBox to edge if it goes off screen
+				mapBox.Top = tileSize - mapBox.Height + 24;
 			}
 			if (mapBox.Top > baseLayer.Height - tileSize - 40)
 			{
