@@ -60,8 +60,12 @@ namespace NEA_Game
 
 			ToolStripMenuItem[] units = new ToolStripMenuItem[]
 			{
-				new ToolStripMenuItem("Unit 1", null, MenuItemClicked), new ToolStripMenuItem("Unit 2", null, MenuItemClicked), new ToolStripMenuItem("Unit 3", null, MenuItemClicked),
-				new ToolStripMenuItem("Unit 4", null, MenuItemClicked), new ToolStripMenuItem("Unit 5", null, MenuItemClicked), new ToolStripMenuItem("Unit 6", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 1", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 2", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 3", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 4", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 5", null, MenuItemClicked),
+				new ToolStripMenuItem("Unit 6", null, MenuItemClicked),
 			};
 
 			unitMenu.DropDownItems.AddRange(units);
