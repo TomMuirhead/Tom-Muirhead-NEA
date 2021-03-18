@@ -119,9 +119,8 @@ namespace NEA_Game
             //Location = mouse location tile
 
             //PictureBox unitPicBox = new PictureBox();
-            //unitPicBox = pictureBox1;
-            //picBox.Controls.Add(unitPicBox);
-            //unitPicBox.Location = new Point(0, 0);
+            //unitPicBox.Image = UnitType
+	    //Not yet added the location, default (0,0)
 
             //Pass which choice
             Unit.UnitType inputChoice;
