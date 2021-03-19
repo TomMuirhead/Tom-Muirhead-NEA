@@ -68,8 +68,8 @@ namespace Game_AI
 			player1_Structures[2, 2] = "p1City";
 			map[0][2, 2] = player1_Structures[2, 2];
 
-			player2_Structures[mapWidth - 3, mapLength - 3] = "p2City";
-			map[0][mapWidth - 3, mapLength - 3] = player2_Structures[mapWidth - 3, mapLength - 3];
+			player2_Structures[mapWidth-3, mapLength-3] = "p2City";
+			map[0][mapWidth-3, mapLength-3] = player2_Structures[mapWidth-3, mapLength-3];
 
 		}
 
