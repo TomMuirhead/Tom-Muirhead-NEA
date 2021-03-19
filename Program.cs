@@ -135,7 +135,7 @@ namespace Game_AI
 		void Possible_Moves(int x, int y)
 		{
 			// check valid move
-			// new TreeNode (action, points, parent???)
+			// new TreeNode (action, points, parentNode)
 			// fills moves
 		}
 	}
