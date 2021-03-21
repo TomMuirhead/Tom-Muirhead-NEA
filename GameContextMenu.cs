@@ -31,15 +31,17 @@ namespace NEA_Game
 		{
 			ToolStripMenuItem[] units = new ToolStripMenuItem[]
 			{
-				new ToolStripMenuItem("Unit 1", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 2", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 3", null, UnitMenuItemClicked),
-				new ToolStripMenuItem("Unit 4", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 5", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 6", null, UnitMenuItemClicked),
+				new ToolStripMenuItem("Unit 1", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 2", null, UnitMenuItemClicked),
+				new ToolStripMenuItem("Unit 3", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 4", null, UnitMenuItemClicked),
+				new ToolStripMenuItem("Unit 5", null, UnitMenuItemClicked), new ToolStripMenuItem("Unit 6", null, UnitMenuItemClicked),
 			};
 			unitMenu.DropDownItems.AddRange(units);
 
 			ToolStripMenuItem[] structures = new ToolStripMenuItem[]
 			{
-				new ToolStripMenuItem("City", null, BuildingMenuItemClicked), new ToolStripMenuItem("Fish", null, BuildingMenuItemClicked), new ToolStripMenuItem("Port", null, BuildingMenuItemClicked),
-				new ToolStripMenuItem("Farm", null, BuildingMenuItemClicked), new ToolStripMenuItem("Lumber", null, BuildingMenuItemClicked), new ToolStripMenuItem("Mine", null, BuildingMenuItemClicked),
+				new ToolStripMenuItem("City", null, BuildingMenuItemClicked), new ToolStripMenuItem("Fish", null, BuildingMenuItemClicked),
+				new ToolStripMenuItem("Port", null, BuildingMenuItemClicked), new ToolStripMenuItem("Farm", null, BuildingMenuItemClicked),
+				new ToolStripMenuItem("Lumber", null, BuildingMenuItemClicked), new ToolStripMenuItem("Mine", null, BuildingMenuItemClicked),
 				new ToolStripMenuItem("Road", null, BuildingMenuItemClicked),
 			};
 			buildingMenu.DropDownItems.AddRange(structures);
@@ -48,8 +50,9 @@ namespace NEA_Game
 		{
 			ToolStripMenuItem[] options = new ToolStripMenuItem[]
 			{
-				new ToolStripMenuItem("Unit 1", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 2", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 3", null, UpgradeMenuItemClicked),
-				new ToolStripMenuItem("Unit 4", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 5", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 6", null, UpgradeMenuItemClicked),
+				new ToolStripMenuItem("Unit 1", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 2", null, UpgradeMenuItemClicked),
+				new ToolStripMenuItem("Unit 3", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 4", null, UpgradeMenuItemClicked),
+				new ToolStripMenuItem("Unit 5", null, UpgradeMenuItemClicked), new ToolStripMenuItem("Unit 6", null, UpgradeMenuItemClicked),
 			};
 			ToolStripMenuItem[] optionItems;
 
